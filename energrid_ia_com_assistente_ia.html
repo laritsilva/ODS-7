@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EnerGrid IA - Protótipo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .mockup-phone {
+      border: 12px solid #2b6cb0;
+      border-radius: 30px;
+      width: 300px;
+      height: 550px;
+      position: relative;
+      background: white;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+    .screen { width: 100%; height: 100%; overflow-y: auto; position: relative; }
+    .energy-icon { transition: transform 0.3s; }
+    .energy-icon:hover { transform: scale(1.1); }
+    .bottom-actions { position: sticky; bottom: 0; padding-top: 10px; background: linear-gradient(transparent, white 15%); }
+    .hidden-screen { display: none; }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+  <div class="text-center w-full">
+    <h1 class="text-3xl font-bold text-blue-800 mb-3">EnerGrid IA ⚡</h1>
+    <p class="mb-8 text-gray-700">Monitoramento inteligente de energia</p>
+
+    <div class="mockup-phone mx-auto text-left">
+      <div class="screen p-4">
+        <!-- Tela 1: Painel principal -->
+        <div id="screen-dashboard">
+          <div class="flex justify-between items-center mb-4">
+            <div>
+              <h2 class="text-xl font-bold text-blue-800">Visão geral</h2>
+              <p class="text-xs text-gray-500">Minha casa · Protótipo</p>
+            </div>
+            <div class="rounded-full bg-blue-100 w-10 h-10 flex items-center justify-center text-xl">⚡</div>
+          </div>
+
+          <div class="bg-blue-50 rounded-lg p-4 mb-3">
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="font-semibold text-blue-800">Energia gerada hoje</h3>
+              <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">Solar</span>
+            </div>
+            <div class="flex items-center justify-around">
+              <div class="text-4xl energy-icon">☀️</div>
+              <div class="text-center">
+                <p class="text-3xl font-bold text-blue-800"><span id="solarValue">1,8</span> kWh</p>
+                <p class="text-xs text-gray-600">Valor ilustrativo</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2 mb-3">
+            <div class="bg-white border rounded-lg p-3 shadow-sm">
+              <div class="text-xl">⚡</div>
+              <p class="text-xs text-gray-500">Consumo hoje</p>
+              <p class="font-bold text-lg text-blue-800"><span id="consumptionValue">2,4</span> kWh</p>
+            </div>
+            <div class="bg-white border rounded-lg p-3 shadow-sm">
+              <div class="text-xl">🔋</div>
+              <p class="text-xs text-gray-500">Carga da bateria</p>
+              <p class="font-bold text-lg text-blue-800"><span id="batteryValue">76</span>%</p>
+            </div>
+          </div>
+
+          <div class="bg-white border rounded-lg p-3 mb-3">
+            <div class="flex justify-between items-center mb-2">
+              <h3 class="font-semibold text-blue-800 text-sm">Reserva de energia</h3>
+              <span id="batteryLabel" class="text-xs text-green-700">Disponível</span>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2">
+              <div id="batteryBar" class="bg-green-500 h-2 rounded-full" style="width:76%"></div>
+            </div>
+          </div>
+
+          <div class="bottom-actions">
+            <button onclick="showScreen('alerts')" class="w-full bg-blue-600 text-white py-3 rounded-lg font-bold mb-2">Alertas (2)</button>
+            <button onclick="showScreen('storm')" class="w-full bg-amber-500 text-white py-3 rounded-lg font-bold mb-2">⛈️ Modo Tempestade</button>
+            <button onclick="showScreen('education')" class="w-full bg-white text-blue-600 border border-blue-600 py-3 rounded-lg font-bold mb-2">Dicas inteligentes</button>
+            <button onclick="showScreen('ai')" class="w-full bg-violet-600 text-white py-3 rounded-lg font-bold">🤖 Conversar com a IA</button>
+          </div>
+        </div>
+
+        <!-- Tela 2: Alertas -->
+        <div id="screen-alerts" class="hidden-screen">
+          <div class="flex items-center mb-4">
+            <button onclick="showScreen('dashboard')" class="text-blue-600 font-semibold">← Voltar</button>
+            <h2 class="text-xl font-bold text-blue-800 ml-3">Alertas</h2>
+          </div>
+          <div class="space-y-3">
+            <div class="bg-yellow-50 border-l-4 border-yellow-500 p-3 rounded-r-lg">
+              <div class="flex justify-between gap-2">
+                <h3 class="font-semibold text-yellow-800 text-sm">Atenção à bateria</h3>
+                <span class="text-xs text-gray-500">Exemplo</span>
+              </div>
+              <p class="text-sm mt-1">Se a carga estiver baixa, reduza o uso de aparelhos não essenciais.</p>
+            </div>
+            <div class="bg-green-50 border-l-4 border-green-500 p-3 rounded-r-lg">
+              <div class="flex justify-between gap-2">
+                <h3 class="font-semibold text-green-800 text-sm">Oportunidade solar</h3>
+                <span class="text-xs text-gray-500">Exemplo</span>
+              </div>
+              <p class="text-sm mt-1">Quando houver maior geração solar, planeje o uso de energia, se possível.</p>
+            </div>
+            <p class="text-xs text-gray-500">Os alertas são demonstrativos. Na versão conectada, dependerão dos dados dos sensores.</p>
+          </div>
+        </div>
+
+        <!-- Tela 3: Modo Tempestade -->
+        <div id="screen-storm" class="hidden-screen">
+          <div class="flex items-center mb-4">
+            <button onclick="showScreen('dashboard')" class="text-blue-600 font-semibold">← Voltar</button>
+            <h2 class="text-lg font-bold text-blue-800 ml-3">Modo Tempestade</h2>
+          </div>
+          <div class="bg-amber-50 rounded-lg p-3 mb-3">
+            <div class="text-3xl mb-1">⛈️</div>
+            <h3 class="font-bold text-amber-900">Prepare-se para um apagão</h3>
+            <p class="text-sm text-gray-700 mt-1">Simule a priorização de equipamentos essenciais durante uma interrupção.</p>
+          </div>
+          <div class="space-y-2 mb-3">
+            <label class="flex items-center justify-between bg-white border rounded-lg p-3 text-sm">
+              <span>💡 Iluminação básica</span><input type="checkbox" class="storm-load" checked>
+            </label>
+            <label class="flex items-center justify-between bg-white border rounded-lg p-3 text-sm">
+              <span>❄️ Geladeira</span><input type="checkbox" class="storm-load" checked>
+            </label>
+            <label class="flex items-center justify-between bg-white border rounded-lg p-3 text-sm">
+              <span>📱 Celular e comunicação</span><input type="checkbox" class="storm-load" checked>
+            </label>
+            <label class="flex items-center justify-between bg-white border rounded-lg p-3 text-sm">
+              <span>📺 TV e outros aparelhos</span><input type="checkbox" class="storm-load">
+            </label>
+          </div>
+          <button onclick="simulateStorm()" class="w-full bg-amber-500 text-white py-3 rounded-lg font-bold mb-2">Simular prioridade</button>
+          <p id="stormResult" class="text-sm text-blue-800 bg-blue-50 rounded-lg p-3">Estimativa ilustrativa: uma bateria residencial de referência de 5 kWh, com 4 kWh úteis, poderia alimentar uma carga média de 200 W por cerca de 20 horas.</p>
+          <p class="text-xs text-gray-500 mt-2">Não é uma previsão meteorológica nem controle real dos aparelhos.</p>
+        </div>
+
+        <!-- Tela 4: Assistente de IA -->
+        <div id="screen-ai" class="hidden-screen">
+          <div class="flex items-center mb-4">
+            <button onclick="showScreen('dashboard')" class="text-blue-600 font-semibold">← Voltar</button>
+            <h2 class="text-xl font-bold text-violet-800 ml-3">Assistente IA</h2>
+          </div>
+          <div class="bg-violet-50 rounded-lg p-3 mb-3">
+            <div class="flex items-center gap-2 mb-1">
+              <div class="rounded-full bg-violet-200 w-10 h-10 flex items-center justify-center text-xl">🤖</div>
+              <div>
+                <h3 class="font-bold text-violet-900">EnerGrid IA</h3>
+                <p class="text-xs text-violet-700">Seu assistente de energia</p>
+              </div>
+            </div>
+            <p class="text-sm text-gray-700">Pergunte como economizar energia, cuidar da bateria ou se preparar para um apagão.</p>
+          </div>
+          <div id="aiChat" class="space-y-2 mb-3" aria-live="polite">
+            <div class="bg-gray-100 rounded-lg p-3 text-sm text-gray-800">
+              Olá! ⚡ Sou a assistente demonstrativa do EnerGrid IA. Posso analisar os números de exemplo deste protótipo e dar sugestões práticas.
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-2 mb-3">
+            <button onclick="askAI('Como posso economizar energia?')" class="text-xs bg-violet-100 text-violet-800 rounded-full px-3 py-2">Economizar energia</button>
+            <button onclick="askAI('Como me preparo para um apagão?')" class="text-xs bg-violet-100 text-violet-800 rounded-full px-3 py-2">Preparar para apagão</button>
+            <button onclick="askAI('Analise a bateria')" class="text-xs bg-violet-100 text-violet-800 rounded-full px-3 py-2">Analisar bateria</button>
+          </div>
+          <form onsubmit="sendAIMessage(event)" class="border rounded-lg p-2 bg-white">
+            <label for="aiInput" class="text-xs text-gray-500 block mb-1">Sua pergunta</label>
+            <div class="flex gap-2">
+              <input id="aiInput" type="text" maxlength="240" placeholder="Ex.: como reduzir o consumo?" class="min-w-0 flex-1 border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400" required>
+              <button type="submit" class="bg-violet-600 text-white rounded-lg px-3 py-2 font-semibold text-sm">Enviar</button>
+            </div>
+          </form>
+          <p class="text-xs text-gray-500 mt-2">Este assistente usa respostas demonstrativas locais. Ainda não é uma IA conectada à internet nem aos sensores reais.</p>
+        </div>
+
+        <!-- Tela 5: Dicas e educação -->
+        <div id="screen-education" class="hidden-screen">
+          <div class="flex items-center mb-4">
+            <button onclick="showScreen('dashboard')" class="text-blue-600 font-semibold">← Voltar</button>
+            <h2 class="text-xl font-bold text-blue-800 ml-3">Dicas inteligentes</h2>
+          </div>
+          <div class="bg-white rounded-lg overflow-hidden shadow-sm border mb-3">
+            <div class="bg-blue-50 p-5 text-center text-5xl">☀️🔋</div>
+            <div class="p-3">
+              <h3 class="font-semibold text-blue-800">Use a energia com consciência</h3>
+              <p class="text-sm text-gray-700 mt-1">Acompanhar geração e consumo ajuda a identificar oportunidades de economia.</p>
+            </div>
+          </div>
+          <div class="bg-blue-50 rounded-lg p-3 mb-3">
+            <h3 class="font-semibold text-blue-800 mb-2">Dicas para economizar</h3>
+            <ul class="text-sm space-y-2 text-gray-700">
+              <li>• Apague luzes em ambientes vazios.</li>
+              <li>• Desligue aparelhos que não estão em uso.</li>
+              <li>• Se possível, use aparelhos durante períodos de maior geração solar.</li>
+              <li>• Em um apagão, priorize iluminação, comunicação e conservação de alimentos.</li>
+            </ul>
+          </div>
+          <div class="bg-green-50 rounded-lg p-3">
+            <h3 class="font-semibold text-green-800 mb-1">Como a IA pode ajudar</h3>
+            <p class="text-sm text-gray-700">Com dados suficientes, a IA poderá identificar padrões de consumo e sugerir ações. Previsões de tempestade exigem uma fonte meteorológica externa.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Descrição das funcionalidades: mantida no estilo do original -->
+    <div class="max-w-md mx-auto mt-8 text-left bg-white p-6 rounded-lg shadow">
+      <h2 class="text-xl font-bold text-blue-800 mb-4">Funcionalidades Principais</h2>
+      <ul class="space-y-3">
+        <li><strong>⚡ Monitoramento de energia:</strong><p class="text-sm text-gray-700">Acompanhar geração solar, consumo e carga armazenada na bateria.</p></li>
+        <li><strong>🔋 Alertas inteligentes:</strong><p class="text-sm text-gray-700">Avisos demonstrativos para baixa carga e oportunidades de melhor uso da energia.</p></li>
+        <li><strong>⛈️ Modo Tempestade:</strong><p class="text-sm text-gray-700">Simulação de priorização de iluminação, geladeira e comunicação durante apagões.</p></li>
+        <li><strong>📈 Histórico e gráficos:</strong><p class="text-sm text-gray-700">Visualização ilustrativa da geração e do consumo para identificar padrões.</p></li>
+        <li><strong>🤖 Assistente de IA interativo:</strong><p class="text-sm text-gray-700">Permite fazer perguntas e receber recomendações demonstrativas sobre economia, bateria e preparação para apagões.</p></li>
+      </ul>
+      <p class="text-xs text-gray-500 mt-5">Observação: este protótipo é uma demonstração visual e ainda não se conecta ao ESP32 ou aos sensores reais.</p>
+    </div>
+  </div>
+
+<script>
+function showScreen(screenId) {
+  document.querySelectorAll('[id^="screen-"]').forEach(screen => screen.classList.add('hidden-screen'));
+  document.getElementById('screen-' + screenId).classList.remove('hidden-screen');
+}
+function simulateStorm() {
+  const selected = [...document.querySelectorAll('.storm-load')].filter(x => x.checked).length;
+  const result = document.getElementById('stormResult');
+  if (selected === 0) {
+    result.textContent = 'Nenhum equipamento foi selecionado. Escolha pelo menos um equipamento essencial para simular a prioridade.';
+  } else {
+    result.textContent = 'Simulação ativa: ' + selected + ' grupo(s) de equipamento selecionado(s). Na aplicação conectada, o sistema poderia recomendar preservar energia para essas cargas. A autonomia real depende da bateria, das perdas e do consumo.';
+  }
+}
+
+function addAIMessage(text, type) {
+  const chat = document.getElementById('aiChat');
+  const bubble = document.createElement('div');
+  bubble.className = type === 'user'
+    ? 'bg-blue-600 text-white rounded-lg p-3 text-sm ml-6'
+    : 'bg-gray-100 text-gray-800 rounded-lg p-3 text-sm mr-4';
+  bubble.textContent = text;
+  chat.appendChild(bubble);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function getAIReply(question) {
+  const q = question.toLocaleLowerCase('pt-BR');
+  const battery = Number(document.getElementById('batteryValue').textContent.replace(',', '.'));
+  const solar = Number(document.getElementById('solarValue').textContent.replace(',', '.'));
+  const consumption = Number(document.getElementById('consumptionValue').textContent.replace(',', '.'));
+
+  if (q.includes('apag') || q.includes('tempest') || q.includes('emerg') || q.includes('falta de luz')) {
+    return 'Para se preparar para um apagão: mantenha o celular carregado, tenha lanternas acessíveis, evite abrir a geladeira sem necessidade e priorize iluminação básica, comunicação e conservação de alimentos. O EnerGrid IA pode ajudar a organizar prioridades, mas este protótipo não prevê tempestades nem controla aparelhos.';
+  }
+  if (q.includes('bateria') || q.includes('carga') || q.includes('reserva')) {
+    if (battery <= 25) {
+      return 'A carga ilustrativa está baixa (' + battery + '%). Reduza usos não essenciais e preserve energia para iluminação e comunicação. Confira a capacidade real da bateria antes de estimar a autonomia.';
+    }
+    return 'A bateria aparece com ' + battery + '% de carga neste exemplo. Para preservar a reserva, evite aparelhos desnecessários e acompanhe o consumo. Esse número é ilustrativo e ainda não vem de um sensor real.';
+  }
+  if (q.includes('econom') || q.includes('consumo') || q.includes('gastar') || q.includes('desperd')) {
+    return 'Sugestão: apague luzes em ambientes vazios, desligue aparelhos fora de uso e, quando for possível, programe tarefas para períodos de maior geração solar. Neste exemplo, a geração é ' + solar.toLocaleString('pt-BR') + ' kWh e o consumo é ' + consumption.toLocaleString('pt-BR') + ' kWh; são valores fictícios para demonstrar a interface.';
+  }
+  if (q.includes('solar') || q.includes('painel') || q.includes('geração') || q.includes('geracao')) {
+    return 'A geração solar depende da luz disponível, da posição do painel e das condições do sistema. Neste protótipo, a geração exibida é ' + solar.toLocaleString('pt-BR') + ' kWh (valor de exemplo). Na versão conectada, o ESP32 poderá enviar medições compatíveis para o aplicativo.';
+  }
+  if (q.includes('oi') || q.includes('olá') || q.includes('ola') || q.includes('ajuda')) {
+    return 'Olá! Posso ajudar com economia de energia, bateria, geração solar e preparação para apagões. Experimente um dos botões de sugestão ou escreva sua pergunta.';
+  }
+  return 'Minha sugestão geral é acompanhar geração, consumo e bateria, reduzir desperdícios e reservar energia para necessidades essenciais. Posso responder melhor se você perguntar sobre economia, bateria, energia solar ou preparação para apagões. As respostas são demonstrativas, não vêm de uma IA online.';
+}
+
+function askAI(question) {
+  addAIMessage(question, 'user');
+  addAIMessage(getAIReply(question), 'ai');
+}
+
+function sendAIMessage(event) {
+  event.preventDefault();
+  const input = document.getElementById('aiInput');
+  const question = input.value.trim();
+  if (!question) return;
+  askAI(question);
+  input.value = '';
+}
+</script>
+</body>
+</html>
